@@ -2,26 +2,14 @@ import express from "express";
 import cors from "cors";
 import { responseHandler } from "./responses.js";
 import { compileSource, runProgram } from "./compiler/compiler-runner.js";
+import { compilerRouteHandler } from "./Routes/api/compilerRoute.js";
 
 const PORT = 8080;
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const compilerRouteHandler = async (req, res, runProgram, responseHandler) => {
-  const inputs = req.body.data;
-  try {
-    console.log(inputs);
-    const output = await runProgram(inputs);
-    responseHandler(200, res, output);
-  } catch (error) {
-    responseHandler(500, res, error);
-    console.log(error);
-  }
-};
-
-app.post(
-  "/api/compiler",
+app.post("/api/compiler", (req, res) =>
   compilerRouteHandler(req, res, runProgram, responseHandler),
 );
 
