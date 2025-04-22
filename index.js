@@ -3,11 +3,12 @@ import cors from "cors";
 import { responseHandler } from "./responses.js";
 import { compileSource, runProgram } from "./compiler/compiler-runner.js";
 
+const PORT = 8080;
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/", async (req, res) => {
+const compilerRouteHandler = async (req, res, runProgram, responseHandler) => {
   const inputs = req.body.data;
   try {
     console.log(inputs);
@@ -17,17 +18,22 @@ app.post("/", async (req, res) => {
     responseHandler(500, res, error);
     console.log(error);
   }
-});
+};
 
-app.use((req, res, next) => {
+app.post(
+  "/api/compiler",
+  compilerRouteHandler(req, res, runProgram, responseHandler),
+);
+
+app.use((req, res) => {
   responseHandler(
     404,
     res,
-    `404 Error Cannot ${req.method} ${req.originalUrl}`,
+    `<p>404 Error Cannot ${req.method} ${req.originalUrl}</p>`,
   );
 });
 
-app.listen(8080, async () => {
+app.listen(PORT, async () => {
   try {
     await compileSource();
     console.log("Server is running");

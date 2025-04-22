@@ -39,7 +39,6 @@ const compileSource = () =>
         reject(code, errorMessage);
       }
     });
-    
   });
 
 export { compileSource, runProgram };
