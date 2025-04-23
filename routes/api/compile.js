@@ -1,5 +1,5 @@
 import express from "express";
-import compileHandler from "../../controller/compileController.js";
+import { compileHandler } from "../../controller/compileController.js";
 
 const router = express.Router();
 

@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import { responseHandler } from "./responses.js";
 import { compileSource, runProgram } from "./compiler/compiler-runner.js";
+import { router as compileRoute } from "./routes/api/compile.js";
 
-import { compileRoute } from "./routes/api/compileRoute.js";
 import dotenv from "dotenv";
 
 const PORT = process.env.PORT || 8080;
