@@ -4,6 +4,8 @@ import { responseHandler } from "./responses.js";
 import { compileSource, runProgram } from "./compiler/compiler-runner.js";
 import { compilerRouteHandler } from "./Routes/api/compilerRoute.js";
 
+import dotenv from "dotenv";
+
 const PORT = process.env.PORT || 8080;
 const authToken = process.env.AUTH_TOKEN || "acke";
 
