@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import { responseHandler } from "./responses.js";
-import { compileSource, runProgram } from "./compiler/compiler-runner.js";
+import { compileSource } from "./compiler/compiler-runner.js";
 import { router as compileRoute } from "./routes/api/compile.js";
 
 import dotenv from "dotenv";
+import { appendFile } from "fs";
 
 const PORT = process.env.PORT || 8080;
 const authToken = process.env.AUTH_TOKEN || "acke";
@@ -28,10 +29,7 @@ app.use((req, res, next) =>
   AuthHandler(req, res, responseHandler, next, authToken),
 );
 
-app.use("/", compileRoute);
-// app.post("/api/compiler", (req, res) =>
-//   compilerRouteHandler(req, res, runProgram, responseHandler),
-// );
+app.use("/api", compileRoute);
 
 app.use((req, res) => {
   responseHandler(
