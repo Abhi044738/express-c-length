@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import { responseHandler } from "./responses.js";
 import { compileSource, runProgram } from "./compiler/compiler-runner.js";
-import { compilerRouteHandler } from "./Routes/api/compilerRoute.js";
 
+import { compileRoute } from "./routes/api/compileRoute.js";
 import dotenv from "dotenv";
 
 const PORT = process.env.PORT || 8080;
@@ -28,9 +28,10 @@ app.use((req, res, next) =>
   AuthHandler(req, res, responseHandler, next, authToken),
 );
 
-app.post("/api/compiler", (req, res) =>
-  compilerRouteHandler(req, res, runProgram, responseHandler),
-);
+app.use("/", compileRoute);
+// app.post("/api/compiler", (req, res) =>
+//   compilerRouteHandler(req, res, runProgram, responseHandler),
+// );
 
 app.use((req, res) => {
   responseHandler(
@@ -40,11 +41,14 @@ app.use((req, res) => {
   );
 });
 
-app.listen(PORT, async () => {
+const startServer = async () => {
   try {
     await compileSource();
-    console.log("Server is running");
+    app.listen(PORT, () => {
+      console.log("Server is running");
+    });
   } catch (error) {
     console.log(error);
   }
-});
+};
+startServer();
