@@ -31,7 +31,7 @@ app.use((req, res, next) =>
 
 app.use("/api", compileRoute);
 
-app.use((req, res) => {
+app.use("*", (req, res) => {
   responseHandler(
     404,
     res,
