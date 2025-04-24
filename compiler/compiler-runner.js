@@ -29,6 +29,7 @@ const compileSource = () =>
 
     let errorMessage = "";
 
+    compile.on("error",(err)=>reject(new Error(`error while compiling \n${err}`)));
     compile.stderr.on("data", (data) => (errorMessage += data.toString()));
 
     compile.on("close", (code) => {
@@ -36,7 +37,7 @@ const compileSource = () =>
         console.log("Compiled");
         resolve(code);
       } else {
-        reject(code, errorMessage);
+        reject(new Error(`error while compiling \n${errorMessage||code}`) );
       }
     });
   });

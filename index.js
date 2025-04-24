@@ -7,6 +7,7 @@ import { handleResponse } from "./utils/responses.js";
 import { AuthHandler } from "./middleware/authMiddleware.js";
 
 import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 const authToken = process.env.AUTH_TOKEN || "acke";
@@ -14,7 +15,6 @@ const authToken = process.env.AUTH_TOKEN || "acke";
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 app.use(serverRoute);
 app.use((req, res, next) =>
@@ -38,7 +38,8 @@ const startServer = async () => {
       console.log("Server is running");
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    process.exit(1);
   }
 };
 startServer();
