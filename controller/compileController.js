@@ -9,6 +9,6 @@ export const compileHandler = async (req, res) => {
     handleResponse(200, res, output);
   } catch (error) {
     handleResponse(500, res, error);
-    console.log(error);
+    console.error(error);
   }
 };

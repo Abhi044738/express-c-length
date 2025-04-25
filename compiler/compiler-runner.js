@@ -6,6 +6,9 @@ const runProgram = (inputs) =>
     let errorMessage = "";
 
     const child = spawn("./compiler/a.out");
+    child.on("error", (err) =>
+      reject(new Error(`error while running \n${err.tostring()}`)),
+    );
     child.stdin.write(inputs);
     child.stdin.end();
 
@@ -17,8 +20,8 @@ const runProgram = (inputs) =>
         console.log("done\n" + result);
         resolve(result);
       } else {
-        console.log(errorMessage);
-        reject(errorMessage);
+        console.error(errorMessage);
+        reject(new Error(`error while running \n${errorMessage}\n${code}`));
       }
     });
   });
@@ -29,7 +32,9 @@ const compileSource = () =>
 
     let errorMessage = "";
 
-    compile.on("error",(err)=>reject(new Error(`error while compiling \n${err}`)));
+    compile.on("error", (err) =>
+      reject(new Error(`error while compiling \n${err.toString()}`)),
+    );
     compile.stderr.on("data", (data) => (errorMessage += data.toString()));
 
     compile.on("close", (code) => {
@@ -37,7 +42,7 @@ const compileSource = () =>
         console.log("Compiled");
         resolve(code);
       } else {
-        reject(new Error(`error while compiling \n${errorMessage||code}`) );
+        reject(new Error(`error while compiling \n${errorMessage} \n${code}`));
       }
     });
   });
